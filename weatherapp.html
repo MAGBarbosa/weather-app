@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Weather App</title>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1"
+    />
+    <link
+      href="C:\Users\melan\Documents\Code bits\SheCodes\SheCodes Plus\Homework week 2\styles.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Arsenal&family=EB+Garamond:wght@500&family=El+Messiri:wght@600&family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="flexInput">
+        <form class="input-group mb-3" id="search-bar">
+          <input
+            name="insert-city"
+            type="text"
+            class="form-control"
+            placeholder="Porto, Osaka,..."
+            aria-label="City"
+            aria-describedby="button-addon2"
+            autocomplete="off"
+            id="search-text-input"
+          />
+          <input
+            class="btn btn-outline-secondary"
+            type="submit"
+            id="button-addon2"
+            value="Search"
+          />
+        </form>
+        <div class="currentLocation">
+          <button
+            class="btn btn-outline-secondary currentLocationButton"
+            type="button"
+            id="currentLocationButton"
+          >
+            Current location
+          </button>
+        </div>
+      </div>
+      <h1 id="city">Porto</h1>
+      <h2></h2>
+      <div class="flex-container">
+        <div class="column-one">
+          <lottie-player
+            src="https://assets7.lottiefiles.com/temp/lf20_Stdaec.json"
+            background="transparent"
+            speed="1"
+            style="width: 80px; height: 80px"
+            loop
+            autoplay
+          ></lottie-player>
+          <p
+            style="text-align: center; display: inline"
+            class="today-temperature"
+            id="temperature"
+          >
+            27
+          </p>
+          <a href="#" id="celsius" style="text-decoration: underline">&degC</a>
+          <p id="separator" style="display: inline">&nbsp;|&nbsp;</p>
+          <a href="#" id="fahrenheit">&degF</a>
+        </div>
+
+        <div class="column-two today-info">
+          <p>Precipitation: 1%</p>
+          <p>Humidity: 72%</p>
+          <p>Wind: 18 km/h</p>
+        </div>
+      </div>
+
+      <p class="temperatureDetails">Temperature</p>
+      <p style="display: inline">&nbsp &nbsp &nbsp|</p>
+      <p class="precipitationDetails">Precipitation</p>
+      <p style="display: inline">&nbsp &nbsp &nbsp|</p>
+      <p class="windDetails">Wind</p>
+      <br />
+
+      <div class="row horizontal-scroll">
+        <div class="col page">
+          <p class="other-days dayOne">Monday</p>
+          <lottie-player
+            class="players"
+            src="https://assets6.lottiefiles.com/temp/lf20_dgjK9i.json"
+            background="transparent"
+            speed="1"
+            style="width: 70px; height: 70px"
+            loop
+            autoplay
+          ></lottie-player>
+          <p class="other-days temperatures">22 | 15 &degC</p>
+        </div>
+
+        <div class="col page">
+          <p class="other-days dayTwo">Tuesday</p>
+          <lottie-player
+            class="players"
+            src="https://assets6.lottiefiles.com/temp/lf20_dgjK9i.json"
+            background="transparent"
+            speed="1"
+            style="width: 70px; height: 70px"
+            loop
+            autoplay
+          ></lottie-player>
+          <p class="other-days temperatures">26 | 17 &degC</p>
+        </div>
+
+        <div class="col page">
+          <p class="other-days dayThree">Wednesday</p>
+          <lottie-player
+            class="players"
+            src="https://assets6.lottiefiles.com/temp/lf20_dgjK9i.json"
+            background="transparent"
+            speed="1"
+            style="width: 70px; height: 70px"
+            loop
+            autoplay
+          ></lottie-player>
+          <p class="other-days temperatures">24 | 17 &degC</p>
+        </div>
+
+        <div class="col page">
+          <p class="other-days dayFour">Thursday</p>
+          <lottie-player
+            class="players"
+            src="https://assets6.lottiefiles.com/temp/lf20_dgjK9i.json"
+            background="transparent"
+            speed="1"
+            style="width: 70px; height: 70px"
+            loop
+            autoplay
+          ></lottie-player>
+          <p class="other-days temperatures">23 | 17 &degC</p>
+        </div>
+
+        <div class="col page">
+          <p class="other-days dayFive">Friday</p>
+          <lottie-player
+            class="players"
+            src="https://assets5.lottiefiles.com/temp/lf20_rpC1Rd.json"
+            background="transparent"
+            speed="1"
+            style="width: 70px; height: 70px"
+            loop
+            autoplay
+          ></lottie-player>
+          <p class="other-days temperatures">22 | 17 &degC</p>
+        </div>
+
+        <div class="col page">
+          <p class="other-days daySix">Saturday</p>
+          <lottie-player
+            class="players"
+            src="https://assets5.lottiefiles.com/temp/lf20_rpC1Rd.json"
+            background="transparent"
+            speed="1"
+            style="width: 70px; height: 70px"
+            loop
+            autoplay
+          ></lottie-player>
+          <p class="other-days temperatures">21 | 16 &degC</p>
+        </div>
+        <div class="col page">
+          <p class="other-days daySix">Sunday</p>
+          <lottie-player
+            class="players"
+            src="https://assets5.lottiefiles.com/temp/lf20_rpC1Rd.json"
+            background="transparent"
+            speed="1"
+            style="width: 70px; height: 70px"
+            loop
+            autoplay
+          ></lottie-player>
+          <p class="other-days temperatures">21 | 16 &degC</p>
+        </div>
+        <div class="col page">
+          <p class="other-days daySix">Monday</p>
+          <lottie-player
+            class="players"
+            src="https://assets5.lottiefiles.com/temp/lf20_rpC1Rd.json"
+            background="transparent"
+            speed="1"
+            style="width: 70px; height: 70px"
+            loop
+            autoplay
+          ></lottie-player>
+          <p class="other-days temperatures">21 | 16 &degC</p>
+        </div>
+      </div>
+      <span class="footer"
+        >Coded by Mélanie Barbosa
+        <a
+          href="https://www.linkedin.com/in/m%C3%A9lanie-barbosa-267778257/"
+          target="_blank"
+          ><img
+            class="linkedin"
+            src="C:\Users\melan\Documents\Code bits\SheCodes\SheCodes Plus\Homework week 2\Resources\logo.png"
+            width="40px"
+          />
+        </a>
+      </span>
+    </div>
+
+    <video
+      autoplay
+      muted
+      loop
+      id="myVideo"
+      onloadstart="this.playbackRate = 0.4;"
+    >
+      <source
+        src="C:\Users\melan\Documents\Code bits\SheCodes\SheCodes Plus\Homework week 2\Resources\background2.mp4"
+        type="video/mp4"
+      />
+    </video>
+    <script src="C:\Users\melan\Documents\Code bits\SheCodes\SheCodes Plus\Homework week 2\index.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  </body>
+</html>
