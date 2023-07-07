@@ -186,7 +186,8 @@ celsiusLink.addEventListener("click", displayCelsiusTemp);
 
 function showCityTemperature(response) {
   let todayTempElement = document.querySelector("#temperature");
-  todayTempElement.innerHTML = `${response.data.main.temp}`;
+  let roundedTemperature = Math.round(response.data.main.temp);
+  todayTempElement.innerHTML = `${roundedTemperature}`;
   console.log(response);
 }
 
@@ -211,7 +212,7 @@ function showTemperature(position) {
   let temperature = Math.round(position.data.main.temp);
   console.log(position.data.main.temp);
   let todayTempElement = document.querySelector("#temperature");
-  todayTempElement.innerHTML = `${temperature}ºC`;
+  todayTempElement.innerHTML = `${temperature}`;
   let h1 = document.querySelector("h1");
   let city = position.data.name;
   h1.innerHTML = `${city}`;
