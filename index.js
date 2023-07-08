@@ -106,13 +106,9 @@ btn.addEventListener("click", toggleButton);
 
 function toggleDetails() {
   let tempBtn = document.querySelector(".temperatureDetails");
-  if (tempBtn.classList[1] != "toggleDetails") {
-    precipBtn.classList.remove("toggleDetails");
-    windBtn.classList.remove("toggleDetails");
-    tempBtn.classList.add("toggleDetails");
-  } else {
-    tempBtn.classList.remove("toggleDetails");
-  }
+  tempBtn.style.textDecoration = "underline";
+  precipBtn.style.textDecoration = "none";
+  windBtn.style.textDecoration = "none";
 }
 let tempBtn = document.querySelector(".temperatureDetails");
 
@@ -120,27 +116,18 @@ tempBtn.addEventListener("click", toggleDetails);
 
 function toggleDetails2() {
   let precipBtn = document.querySelector(".precipitationDetails");
-  if (precipBtn.classList[1] != "toggleDetails") {
-    tempBtn.classList.remove("toggleDetails");
-    windBtn.classList.remove("toggleDetails");
-    precipBtn.classList.add("toggleDetails");
-  } else {
-    precipBtn.classList.remove("toggleDetails");
-  }
+  tempBtn.style.textDecoration = "none";
+  precipBtn.style.textDecoration = "underline";
+  windBtn.style.textDecoration = "none";
 }
 let precipBtn = document.querySelector(".precipitationDetails");
 
 precipBtn.addEventListener("click", toggleDetails2);
 
 function toggleDetails3() {
-  let windBtn = document.querySelector(".windDetails");
-  if (windBtn.classList[1] != "toggleDetails") {
-    tempBtn.classList.remove("toggleDetails");
-    precipBtn.classList.remove("toggleDetails");
-    windBtn.classList.add("toggleDetails");
-  } else {
-    windBtn.classList.remove("toggleDetails");
-  }
+  tempBtn.style.textDecoration = "none";
+  precipBtn.style.textDecoration = "none";
+  windBtn.style.textDecoration = "underline";
 }
 let windBtn = document.querySelector(".windDetails");
 
