@@ -144,30 +144,15 @@ form.addEventListener("submit", function (event) {
   h1.innerHTML = `${selectedCity.value}`;
 });
 
-//Convert Celsius to Fahrenheit
-let celsiusTemp = 17;
-let farenheitLink = document.querySelector("#fahrenheit");
-let celsiusLink = document.querySelector("#celsius");
-
-function displayFarenheitTemp(event) {
-  event.preventDefault();
-  let farenheitTemp = (celsiusTemp * 9) / 5 + 32;
-  let temperatureElement = document.querySelector("#temperature");
-  temperatureElement.innerHTML = Math.round(farenheitTemp);
-  farenheitLink.style.textDecoration = "underline";
-  celsiusLink.style.textDecoration = "none";
+//Give real weather for Porto as default
+let portoTemperature = document.querySelector("#temperature");
+function showPortoTemperature(response) {
+  portoTemperature.innerHTML = Math.round(response.data.main.temp);
 }
 
-function displayCelsiusTemp(event) {
-  event.preventDefault();
-  let temperatureElement = document.querySelector("#temperature");
-  temperatureElement.innerHTML = Math.round(celsiusTemp);
-  celsiusLink.style.textDecoration = "underline";
-  farenheitLink.style.textDecoration = "none";
-}
-
-farenheitLink.addEventListener("click", displayFarenheitTemp);
-celsiusLink.addEventListener("click", displayCelsiusTemp);
+let apiKey = "e0a5a97de9a0b7a951e9d154a8f9bad8";
+let apiUrlPorto = `https://api.openweathermap.org/data/2.5/weather?q=porto&appid=${apiKey}&units=metric`;
+axios.get(apiUrlPorto).then(showPortoTemperature);
 
 //Get weather info from inputted city
 
@@ -219,3 +204,29 @@ function requestLocation() {
 
 let currentLocationButton = document.querySelector("#currentLocationButton");
 currentLocationButton.addEventListener("click", requestLocation);
+
+//Convert Celsius to Fahrenheit
+
+let farenheitLink = document.querySelector("#fahrenheit");
+let celsiusLink = document.querySelector("#celsius");
+
+function displayFarenheitTemp(event) {
+  event.preventDefault();
+  let celsiusValue = portoTemperature.innerHTML;
+  let farenheitTemp = Math.round((celsiusValue * 9) / 5 + 32);
+  portoTemperature.innerHTML = Math.round(farenheitTemp);
+  farenheitLink.style.textDecoration = "underline";
+  celsiusLink.style.textDecoration = "none";
+}
+
+function displayCelsiusTemp(event) {
+  event.preventDefault();
+  let farenheitTemp = portoTemperature.innerHTML;
+  celsiusValue = ((farenheitTemp - 32) * 5) / 9;
+  portoTemperature.innerHTML = Math.round(celsiusValue);
+  celsiusLink.style.textDecoration = "underline";
+  farenheitLink.style.textDecoration = "none";
+}
+
+farenheitLink.addEventListener("click", displayFarenheitTemp);
+celsiusLink.addEventListener("click", displayCelsiusTemp);
