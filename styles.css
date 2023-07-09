@@ -135,6 +135,9 @@ input[type="text"]:focus {
   font-family: "EB Garamond", serif;
   font-size: 14px;
 }
+.project-links {
+  margin-bottom: 2px;
+}
 
 @media screen and (max-width: 800px) {
   #myVideo {
