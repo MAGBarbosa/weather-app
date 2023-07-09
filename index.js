@@ -20,20 +20,6 @@ let weather = {
     humidity: 20,
   },
 };
-/*let city = prompt("Enter a city");
-
-if (weather[city] !== undefined) {
-  let temperature = Math.round(weather[city].temp);
-  let fahrenheit = weather[city].temp * (9 / 5) + 32;
-  fahrenheit = Math.round(fahrenheit);
-  alert(
-    `It is currently ${temperature}°C (${fahrenheit}°F) in ${city} with a humidity of ${weather[city].humidity}%`
-  );
-} else {
-  alert(
-    `Sorry, we don't know the weather for this city, try going to https://www.google.com/search?q=weather+${city}`
-  );
-}*/
 
 let now = new Date();
 console.log(now);
@@ -146,8 +132,12 @@ form.addEventListener("submit", function (event) {
 
 //Give real weather for Porto as default
 let portoTemperature = document.querySelector("#temperature");
+
 function showPortoTemperature(response) {
+  celsiusLink.style.textDecoration = "underline";
+
   portoTemperature.innerHTML = Math.round(response.data.main.temp);
+  console.log("else");
 }
 
 let apiKey = "e0a5a97de9a0b7a951e9d154a8f9bad8";
@@ -161,16 +151,26 @@ function showCityTemperature(response) {
   let roundedTemperature = Math.round(response.data.main.temp);
   todayTempElement.innerHTML = `${roundedTemperature}`;
   console.log(response);
+  if (fahrenheitLink.style.textDecoration === "underline") {
+    todayTempElement.innerHTML = `${Math.round(
+      (roundedTemperature * 9) / 5 + 32
+    )}`;
+  }
 }
 
 function searchCity(context) {
   context.preventDefault();
   let h1 = document.querySelector("#city");
   let selectedCity = document.querySelector("#search-text-input");
+  if (selectedCity.value === "") {
+    selectedCity.value = "Porto";
+  }
   let searchedCity = selectedCity.value.toLowerCase();
   let firstLetter = selectedCity.value[0].toUpperCase();
   let otherLetters = selectedCity.value.slice(1).toLowerCase();
+
   h1.innerHTML = `${firstLetter}${otherLetters}`;
+
   let apiKey = "e0a5a97de9a0b7a951e9d154a8f9bad8";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchedCity}&appid=${apiKey}&units=metric`;
   axios.get(apiUrl).then(showCityTemperature);
@@ -185,6 +185,9 @@ function showTemperature(position) {
   console.log(position.data.main.temp);
   let todayTempElement = document.querySelector("#temperature");
   todayTempElement.innerHTML = `${temperature}`;
+  if (fahrenheitLink.style.textDecoration === "underline") {
+    todayTempElement.innerHTML = `${Math.round((temperature * 9) / 5 + 32)}`;
+  }
   let h1 = document.querySelector("h1");
   let city = position.data.name;
   h1.innerHTML = `${city}`;
@@ -207,26 +210,25 @@ currentLocationButton.addEventListener("click", requestLocation);
 
 //Convert Celsius to Fahrenheit
 
-let farenheitLink = document.querySelector("#fahrenheit");
+let fahrenheitLink = document.querySelector("#fahrenheit");
 let celsiusLink = document.querySelector("#celsius");
 
-function displayFarenheitTemp(event) {
+function displayTemp(event) {
   event.preventDefault();
-  let celsiusValue = portoTemperature.innerHTML;
-  let farenheitTemp = Math.round((celsiusValue * 9) / 5 + 32);
-  portoTemperature.innerHTML = Math.round(farenheitTemp);
-  farenheitLink.style.textDecoration = "underline";
-  celsiusLink.style.textDecoration = "none";
+  if (fahrenheitLink.style.textDecoration !== "underline") {
+    let celsiusValue = portoTemperature.innerHTML;
+    let farenheitTemp = Math.round((celsiusValue * 9) / 5 + 32);
+    portoTemperature.innerHTML = Math.round(farenheitTemp);
+    fahrenheitLink.style.textDecoration = "underline";
+    celsiusLink.style.textDecoration = "none";
+  } else {
+    farenheitTemp = portoTemperature.innerHTML;
+    celsiusValue = ((farenheitTemp - 32) * 5) / 9;
+    portoTemperature.innerHTML = Math.round(celsiusValue);
+    celsiusLink.style.textDecoration = "underline";
+    fahrenheitLink.style.textDecoration = "none";
+  }
 }
 
-function displayCelsiusTemp(event) {
-  event.preventDefault();
-  let farenheitTemp = portoTemperature.innerHTML;
-  celsiusValue = ((farenheitTemp - 32) * 5) / 9;
-  portoTemperature.innerHTML = Math.round(celsiusValue);
-  celsiusLink.style.textDecoration = "underline";
-  farenheitLink.style.textDecoration = "none";
-}
-
-farenheitLink.addEventListener("click", displayFarenheitTemp);
-celsiusLink.addEventListener("click", displayCelsiusTemp);
+fahrenheitLink.addEventListener("click", displayTemp);
+celsiusLink.addEventListener("click", displayTemp);
