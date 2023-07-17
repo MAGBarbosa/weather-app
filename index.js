@@ -1,26 +1,3 @@
-let weather = {
-  paris: {
-    temp: 19.7,
-    humidity: 80,
-  },
-  tokyo: {
-    temp: 17.3,
-    humidity: 50,
-  },
-  lisbon: {
-    temp: 30.2,
-    humidity: 20,
-  },
-  "san francisco": {
-    temp: 20.9,
-    humidity: 100,
-  },
-  oslo: {
-    temp: -5,
-    humidity: 20,
-  },
-};
-
 let now = new Date();
 console.log(now);
 
@@ -68,11 +45,6 @@ let months = [
 let monthName = months[now.getMonth()];
 let h2 = document.querySelector("h2");
 h2.innerHTML = `${weekDay}, ${monthName} ${date}, ${year}`;
-
-function formatDate() {
-  return `${weekDay}, ${monthName} ${date}, ${year}`;
-}
-console.log(formatDate(now));
 
 //JS to toggle currentLocation button ON and OFF
 
@@ -134,7 +106,7 @@ form.addEventListener("submit", function (event) {
 let portoTemperature = document.querySelector("#temperature");
 
 function showPortoTemperature(response) {
-  celsiusLink.style.textDecoration = "underline";
+  celsiusLink.style.fontWeight = "bold";
 
   portoTemperature.innerHTML = Math.round(response.data.main.temp);
   console.log("else");
@@ -215,18 +187,18 @@ let celsiusLink = document.querySelector("#celsius");
 
 function displayTemp(event) {
   event.preventDefault();
-  if (fahrenheitLink.style.textDecoration !== "underline") {
+  if (fahrenheitLink.style.fontWeight !== "bold") {
     let celsiusValue = portoTemperature.innerHTML;
     let farenheitTemp = Math.round((celsiusValue * 9) / 5 + 32);
     portoTemperature.innerHTML = Math.round(farenheitTemp);
-    fahrenheitLink.style.textDecoration = "underline";
-    celsiusLink.style.textDecoration = "none";
+    fahrenheitLink.style.fontWeight = "bold";
+    celsiusLink.style.fontWeight = "normal";
   } else {
     farenheitTemp = portoTemperature.innerHTML;
     celsiusValue = ((farenheitTemp - 32) * 5) / 9;
     portoTemperature.innerHTML = Math.round(celsiusValue);
-    celsiusLink.style.textDecoration = "underline";
-    fahrenheitLink.style.textDecoration = "none";
+    celsiusLink.style.fontWeight = "bold";
+    fahrenheitLink.style.fontWeight = "normal";
   }
 }
 
