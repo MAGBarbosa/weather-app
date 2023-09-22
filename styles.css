@@ -82,27 +82,34 @@ h2 {
 .row {
   padding: 10px 5px 0px 5px;
 }
-.other-days {
-  font-size: 16px;
-  text-align: center;
-  line-height: 1.5;
-  margin: 8px;
-}
-
-.players {
-  margin: 0 auto;
-}
-.col {
+.col-2 {
   border: 1px solid rgb(70, 101, 109);
   border-radius: 10px;
-  margin: 0px 2px;
+  margin: 0px 0px;
   background: rgba(86, 118, 126, 0.4);
   padding-left: 0 !important;
   padding-right: 0 !important;
   transition: background-color 300ms ease-in-out;
 }
-.col:hover {
+.col-2:hover {
   background-color: rgb(70, 101, 109, 0.6);
+}
+
+.other-days {
+  font-size: 16px;
+  text-align: center;
+  line-height: 1.5;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-right: 0px;
+  margin-left: 0px;
+  font-family: "Arsenal", sans-serif;
+  font-weight: 800;
+  padding: 0px;
+}
+
+.players {
+  margin: 0 auto;
 }
 
 #myVideo {

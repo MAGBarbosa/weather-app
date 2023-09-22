@@ -144,7 +144,12 @@ function searchCity(context) {
   h1.innerHTML = `${firstLetter}${otherLetters}`;
 
   let apiKey = "e0a5a97de9a0b7a951e9d154a8f9bad8";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchedCity}&appid=${apiKey}&units=metric`;
+  if (fahrenheitLink.style.textDecoration === "underline") {
+    units = "imperial";
+  } else {
+    units = "metric";
+  }
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchedCity}&appid=${apiKey}&units=${units}`;
   axios.get(apiUrl).then(showCityTemperature);
 }
 
@@ -171,6 +176,7 @@ function showPosition(position) {
   let apiKey = "e0a5a97de9a0b7a951e9d154a8f9bad8";
   let geolocationApiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
   axios.get(geolocationApiUrl).then(showTemperature);
+  getForecast(lat, lon);
 }
 
 function requestLocation() {
@@ -184,23 +190,82 @@ currentLocationButton.addEventListener("click", requestLocation);
 
 let fahrenheitLink = document.querySelector("#fahrenheit");
 let celsiusLink = document.querySelector("#celsius");
+//let weekForecastMaxTemp = document.querySelector(".max-temp");
+//let weekForecastMinTemp = document.querySelector(".min-temp");
 
-function displayTemp(event) {
+function convertTemp(event) {
   event.preventDefault();
   if (fahrenheitLink.style.fontWeight !== "bold") {
     let celsiusValue = portoTemperature.innerHTML;
     let farenheitTemp = Math.round((celsiusValue * 9) / 5 + 32);
+    //let maxTemp = weekForecastMaxTemp.innerHTML;
+    //let minTemp = weekForecastMinTemp.innerHTML;
     portoTemperature.innerHTML = Math.round(farenheitTemp);
+    //weekForecastMaxTemp.innerHTML = Math.round((maxTemp * 9) / 5 + 32);
+    //weekForecastMinTemp.innerHTML = Math.round((minTemp * 9) / 5 + 32);
     fahrenheitLink.style.fontWeight = "bold";
     celsiusLink.style.fontWeight = "normal";
   } else {
     farenheitTemp = portoTemperature.innerHTML;
     celsiusValue = ((farenheitTemp - 32) * 5) / 9;
     portoTemperature.innerHTML = Math.round(celsiusValue);
+    //weekForecastMaxTemp.innerHTML = ((maxTemp - 32) * 5) / 9;
+    //weekForecastMinTemp.innerHTML = ((minTemp - 32) * 5) / 9;
     celsiusLink.style.fontWeight = "bold";
     fahrenheitLink.style.fontWeight = "normal";
   }
 }
 
-fahrenheitLink.addEventListener("click", displayTemp);
-celsiusLink.addEventListener("click", displayTemp);
+fahrenheitLink.addEventListener("click", convertTemp);
+celsiusLink.addEventListener("click", convertTemp);
+
+// 6-days forecast
+
+function displayForecast(coordinates) {
+  console.log(coordinates);
+  let forecast = document.querySelector(".weekly-forecast");
+  let forecastHTML = `<div class="row">`;
+  let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  days.forEach(function (day, index) {
+    if (index < 6) {
+      forecastHTML =
+        forecastHTML +
+        `<div class="col-2">
+          <div class="other-days">${day}</div>
+            <lottie-player
+              class="players"
+              src="https://assets6.lottiefiles.com/temp/lf20_dgjK9i.json"
+              background="transparent"
+              speed="1"
+              style="width: 70px; height: 70px"
+              loop
+              autoplay
+            ></lottie-player>
+            <div class="other-days"><span class="other-days temperatures max-temp">22</span>
+            <span id="other-days temperatures">|<span>
+            <span class="other-days temperatures min-temp">15</span>
+            <span id="other-days temperatures celsius-symbol">ºC<span>
+            <div>
+          </div>
+        </div>
+  `;
+      forecastHTML = forecastHTML + `</div>`;
+      forecast.innerHTML = forecastHTML;
+    }
+  });
+}
+
+function getForecast(lat, lon) {
+  let oneCallApiKey = "e0a5a97de9a0b7a951e9d154a8f9bad8";
+  let oneCallApiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${oneCallApiKey}`;
+  console.log(lat);
+  axios.get(oneCallApiUrl).then(displayForecast);
+}
