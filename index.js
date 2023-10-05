@@ -125,10 +125,11 @@ function showCityTemperature(response) {
   let roundedTemperature = Math.round(response.data.main.temp);
   todayTempElement.innerHTML = `${roundedTemperature}`;
   console.log(response);
-  if (fahrenheitLink.style.textDecoration === "underline") {
+  if (fahrenheitLink.style.fontWeight === "bold") {
     todayTempElement.innerHTML = `${Math.round(
       (roundedTemperature * 9) / 5 + 32
     )}`;
+    
   }
 }
 
@@ -146,12 +147,8 @@ function searchCity(context) {
   h1.innerHTML = `${firstLetter}${otherLetters}`;
 
   let apiKey = "e0a5a97de9a0b7a951e9d154a8f9bad8";
-  if (fahrenheitLink.style.textDecoration === "underline") {
-    units = "imperial";
-  } else {
-    units = "metric";
-  }
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchedCity}&appid=${apiKey}&units=${units}`;
+  //forcing metric because main function will convert depending on user preference
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchedCity}&appid=${apiKey}&units=metric`;
   axios.get(apiUrl).then(showCityTemperature);
 }
 
@@ -164,7 +161,7 @@ function showTemperature(position) {
   console.log(position.data.main.temp);
   let todayTempElement = document.querySelector("#temperature");
   todayTempElement.innerHTML = `${temperature}`;
-  if (fahrenheitLink.style.textDecoration === "underline") {
+  if (fahrenheitLink.style.fontWeight === "bold") {
     todayTempElement.innerHTML = `${Math.round((temperature * 9) / 5 + 32)}`;
   }
   let h1 = document.querySelector("h1");
@@ -188,52 +185,24 @@ function requestLocation() {
 let currentLocationButton = document.querySelector("#currentLocationButton");
 currentLocationButton.addEventListener("click", requestLocation);
 
-//Convert Celsius to Fahrenheit
 
-let fahrenheitLink = document.querySelector("#fahrenheit");
-let celsiusLink = document.querySelector("#celsius");
-
-
-//let weekForecastMinTemp = document.querySelector(".min-temp");
-
-function convertTemp(event) {
-  event.preventDefault();
-  //let weekForecastMaxTemp = document.querySelector(".max-temp");
-  //console.log("aqui  ",weekForecastMaxTemp);
-  if (fahrenheitLink.style.fontWeight !== "bold") {
-    let celsiusValue = portoTemperature.innerHTML;
-    let farenheitTemp = Math.round((celsiusValue * 9) / 5 + 32);
-    //let maxTemp = weekForecastMaxTemp.innerHTML;
-    //let minTemp = weekForecastMinTemp.innerHTML;
-    portoTemperature.innerHTML = Math.round(farenheitTemp);
-    //weekForecastMaxTemp.innerHTML = Math.round((maxTemp * 9) / 5 + 32);
-    //weekForecastMinTemp.innerHTML = Math.round((minTemp * 9) / 5 + 32);
-    fahrenheitLink.style.fontWeight = "bold";
-    celsiusLink.style.fontWeight = "normal";
-  } else {
-    farenheitTemp = portoTemperature.innerHTML;
-    celsiusValue = ((farenheitTemp - 32) * 5) / 9;
-    portoTemperature.innerHTML = Math.round(celsiusValue);
-    //weekForecastMaxTemp.innerHTML = ((maxTemp - 32) * 5) / 9;
-    //weekForecastMinTemp.innerHTML = ((minTemp - 32) * 5) / 9;
-    celsiusLink.style.fontWeight = "bold";
-    fahrenheitLink.style.fontWeight = "normal";
-  }
-}
-
-fahrenheitLink.addEventListener("click", convertTemp);
-celsiusLink.addEventListener("click", convertTemp);
 // 6-days forecast
 
 function displayForecast(response) {
   console.log("aqui :",response);
-  //TODO call forcast api
   let forecast = document.querySelector(".weekly-forecast");
   let forecastHTML = `<div class="row">`;
-  //TODO nice to have day in order depending on local current day
-  let days =  getDaysInOrder()
-  //TODO inject temp based on API response
+  let days =  getDaysInOrder();
+  
   days.forEach(function (day, index) {
+    let temp= response.data.daily[index].temp;
+    let maxTemp= Math.round(temp.max-273.15);
+    let minTemp= Math.round(temp.min-273.15);
+    if (fahrenheitLink.style.fontWeight === "bold") {
+      maxTemp = `${Math.round((maxTemp * 9) / 5 + 32)}`;
+      minTemp = `${Math.round((minTemp * 9) / 5 + 32)}`;
+    }
+    
     if (index < 6) {
       forecastHTML =
         forecastHTML +
@@ -248,9 +217,9 @@ function displayForecast(response) {
               loop
               autoplay
             ></lottie-player>
-            <div class="other-days"><span class="other-days temperatures max-temp">22</span>
+            <div class="other-days"><span class="other-days temperatures max-temp">${maxTemp}</span>
             <span id="other-days temperatures">|<span>
-            <span class="other-days temperatures min-temp">15</span>
+            <span class="other-days temperatures min-temp">${minTemp}</span>
             <span id="other-days temperatures celsius-symbol">ºC<span>
             <div>
           </div>
@@ -295,3 +264,43 @@ for(i = 0 ; i < 7; i++){
 
 return finalWeekArray
 }
+
+//Convert Celsius to Fahrenheit
+
+let fahrenheitLink = document.querySelector("#fahrenheit");
+let celsiusLink = document.querySelector("#celsius");
+
+function convertTemp(event) {
+  event.preventDefault();
+  let weekForecastMaxTemp = document.querySelectorAll(".max-temp");
+  let weekForecastMinTemp = document.querySelectorAll(".min-temp");
+
+  if (fahrenheitLink.style.fontWeight !== "bold") {
+    let celsiusValue = portoTemperature.innerHTML;
+    let farenheitTemp = Math.round((celsiusValue * 9) / 5 + 32);
+    portoTemperature.innerHTML = Math.round(farenheitTemp);
+    fahrenheitLink.style.fontWeight = "bold";
+    celsiusLink.style.fontWeight = "normal";
+    for(i=0;i<6;i++){
+    let maxTemp = weekForecastMaxTemp[i].innerHTML;
+    let minTemp = weekForecastMinTemp[i].innerHTML;
+    weekForecastMaxTemp[i].innerHTML = Math.round((maxTemp * 9) / 5 + 32);
+    weekForecastMinTemp[i].innerHTML = Math.round((minTemp * 9) / 5 + 32);
+  }
+  } else {
+    farenheitTemp = portoTemperature.innerHTML;
+    celsiusValue = ((farenheitTemp - 32) * 5) / 9;
+    portoTemperature.innerHTML = Math.round(celsiusValue);
+    celsiusLink.style.fontWeight = "bold";
+    fahrenheitLink.style.fontWeight = "normal";
+    for(i=0;i<6;i++){
+    let maxTemp = weekForecastMaxTemp[i].innerHTML;
+    let minTemp = weekForecastMinTemp[i].innerHTML;
+    weekForecastMaxTemp[i].innerHTML = Math.round(((maxTemp - 32) * 5) / 9);
+    weekForecastMinTemp[i].innerHTML = Math.round(((minTemp - 32) * 5) / 9);
+  }
+  }
+}
+
+fahrenheitLink.addEventListener("click", convertTemp);
+celsiusLink.addEventListener("click", convertTemp);
