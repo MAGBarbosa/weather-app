@@ -109,16 +109,18 @@ function showPortoTemperature(response) {
   celsiusLink.style.fontWeight = "bold";
 
   portoTemperature.innerHTML = Math.round(response.data.main.temp);
-  console.log("else");
+  getForecast(response.data.coord.lat, response.data.coord.lon);
 }
 
 let apiKey = "e0a5a97de9a0b7a951e9d154a8f9bad8";
 let apiUrlPorto = `https://api.openweathermap.org/data/2.5/weather?q=porto&appid=${apiKey}&units=metric`;
 axios.get(apiUrlPorto).then(showPortoTemperature);
 
+
 //Get weather info from inputted city
 
 function showCityTemperature(response) {
+  getForecast(response.data.coord.lat,response.data.coord.lon);
   let todayTempElement = document.querySelector("#temperature");
   let roundedTemperature = Math.round(response.data.main.temp);
   todayTempElement.innerHTML = `${roundedTemperature}`;
@@ -190,11 +192,14 @@ currentLocationButton.addEventListener("click", requestLocation);
 
 let fahrenheitLink = document.querySelector("#fahrenheit");
 let celsiusLink = document.querySelector("#celsius");
-//let weekForecastMaxTemp = document.querySelector(".max-temp");
+
+
 //let weekForecastMinTemp = document.querySelector(".min-temp");
 
 function convertTemp(event) {
   event.preventDefault();
+  //let weekForecastMaxTemp = document.querySelector(".max-temp");
+  //console.log("aqui  ",weekForecastMaxTemp);
   if (fahrenheitLink.style.fontWeight !== "bold") {
     let celsiusValue = portoTemperature.innerHTML;
     let farenheitTemp = Math.round((celsiusValue * 9) / 5 + 32);
@@ -218,22 +223,16 @@ function convertTemp(event) {
 
 fahrenheitLink.addEventListener("click", convertTemp);
 celsiusLink.addEventListener("click", convertTemp);
-
 // 6-days forecast
 
-function displayForecast(coordinates) {
-  console.log(coordinates);
+function displayForecast(response) {
+  console.log("aqui :",response);
+  //TODO call forcast api
   let forecast = document.querySelector(".weekly-forecast");
   let forecastHTML = `<div class="row">`;
-  let days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+  //TODO nice to have day in order depending on local current day
+  let days =  getDaysInOrder()
+  //TODO inject temp based on API response
   days.forEach(function (day, index) {
     if (index < 6) {
       forecastHTML =
@@ -266,6 +265,33 @@ function displayForecast(coordinates) {
 function getForecast(lat, lon) {
   let oneCallApiKey = "e0a5a97de9a0b7a951e9d154a8f9bad8";
   let oneCallApiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${oneCallApiKey}`;
-  console.log(lat);
   axios.get(oneCallApiUrl).then(displayForecast);
+}
+
+// Defining the next day from today for the daily forecast
+
+function getDaysInOrder(){
+  let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+let currentDay = new Date().getDay()+1; // so i get the next day from today
+let finalWeekArray = [];
+let restartDay = 0
+for(i = 0 ; i < 7; i++){
+  if(currentDay +i > 6){
+    finalWeekArray[i] = days[restartDay++]
+}else{
+  finalWeekArray[i] = days[currentDay +i]
+}
+
+}
+
+return finalWeekArray
 }
