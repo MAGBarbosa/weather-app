@@ -135,6 +135,8 @@ let portoTemperature = document.querySelector("#temperature");
 let todayDescription= document.querySelector("#today-description");
 let todayHumidityValue= document.querySelector("#today-humidity-value");
 let todayWindValue= document.querySelector("#today-wind-value");
+let todayLottieFile= document.querySelector("#today-lottie");
+
 
 function showPortoTemperature(response) {
   celsiusLink.style.fontWeight = "bold";
@@ -143,6 +145,7 @@ console.log("dafuq",response);
   todayHumidityValue.innerHTML = Math.round(response.data.main.humidity);
   todayWindValue.innerHTML = Math.round(response.data.wind.speed*3.6);
   todayDescription.innerHTML = response.data.weather[0].description;
+
 
   getForecast(response.data.coord.lat, response.data.coord.lon);
 }
@@ -253,7 +256,7 @@ function displayForecast(response) {
           <div class="other-days">${day}</div>
             <lottie-player
               class="players"
-              src="https://assets6.lottiefiles.com/temp/lf20_dgjK9i.json"
+              src="./Resources/lotties/foggy.json"
               background="transparent"
               speed="1"
               style="width: 70px; height: 70px"
