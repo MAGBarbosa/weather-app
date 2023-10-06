@@ -67,6 +67,15 @@ function toggleDetails() {
   tempBtn.style.textDecoration = "underline";
   precipBtn.style.textDecoration = "none";
   windBtn.style.textDecoration = "none";
+  document.querySelectorAll(".forecastDiv").forEach(function (div){
+    div.style.display = "block"
+  })
+  document.querySelectorAll(".precipitationDiv").forEach(function(div){
+    div.style.display = "none"
+  })
+  document.querySelectorAll(".windDiv").forEach(function(div){
+    div.style.display = "none"
+  })
 }
 let tempBtn = document.querySelector(".temperatureDetails");
 
@@ -77,6 +86,15 @@ function toggleDetails2() {
   tempBtn.style.textDecoration = "none";
   precipBtn.style.textDecoration = "underline";
   windBtn.style.textDecoration = "none";
+  document.querySelectorAll(".forecastDiv").forEach(function (div){
+    div.style.display = "none"
+  })
+  document.querySelectorAll(".precipitationDiv").forEach(function(div){
+    div.style.display = "block"
+  })
+  document.querySelectorAll(".windDiv").forEach(function(div){
+    div.style.display = "none"
+  })
 }
 let precipBtn = document.querySelector(".precipitationDetails");
 
@@ -86,6 +104,16 @@ function toggleDetails3() {
   tempBtn.style.textDecoration = "none";
   precipBtn.style.textDecoration = "none";
   windBtn.style.textDecoration = "underline";
+
+  document.querySelectorAll(".forecastDiv").forEach(function (div){
+    div.style.display = "none"
+  })
+  document.querySelectorAll(".precipitationDiv").forEach(function(div){
+    div.style.display = "none"
+  })
+  document.querySelectorAll(".windDiv").forEach(function(div){
+    div.style.display = "block"
+  })
 }
 let windBtn = document.querySelector(".windDetails");
 
@@ -193,20 +221,22 @@ function displayForecast(response) {
   let forecast = document.querySelector(".weekly-forecast");
   let forecastHTML = `<div class="row">`;
   let days =  getDaysInOrder();
+   toggleDetails();
   
   days.forEach(function (day, index) {
     let temp= response.data.daily[index].temp;
+    let precipitation= Math.round((response.data.daily[index].pop)*100);
+    let wind= Math.round((response.data.daily[index].wind_speed) *3.6);
     let maxTemp= Math.round(temp.max-273.15);
     let minTemp= Math.round(temp.min-273.15);
     if (fahrenheitLink.style.fontWeight === "bold") {
       maxTemp = `${Math.round((maxTemp * 9) / 5 + 32)}`;
       minTemp = `${Math.round((minTemp * 9) / 5 + 32)}`;
     }
-    
     if (index < 6) {
       forecastHTML =
         forecastHTML +
-        `<div class="col-2">
+        `<div class="col-2 forecastDiv" style="display:block">
           <div class="other-days">${day}</div>
             <lottie-player
               class="players"
@@ -226,9 +256,52 @@ function displayForecast(response) {
         </div>
   `;
       forecastHTML = forecastHTML + `</div>`;
-      forecast.innerHTML = forecastHTML;
+
+      //Adding precipitation
+      forecastHTML =
+      forecastHTML +
+      `<div class="col-2 precipitationDiv" style="display:none">
+        <div class="other-days">${day}</div>
+          <lottie-player
+            class="players"
+            src="https://assets6.lottiefiles.com/temp/lf20_dgjK9i.json"
+            background="transparent"
+            speed="1"
+            style="width: 70px; height: 70px"
+            loop
+            autoplay
+          ></lottie-player>
+          <div class="other-days"><span class="other-days temperatures">${precipitation}%</span>
+          <div>
+        </div>
+      </div>
+`;
+forecastHTML = forecastHTML + `</div>`;
+
+      //Adding wind
+      forecastHTML =
+      forecastHTML +
+      `<div class="col-2 windDiv" style="display:none">
+        <div class="other-days">${day}</div>
+          <lottie-player
+            class="players"
+            src="https://assets6.lottiefiles.com/temp/lf20_dgjK9i.json"
+            background="transparent"
+            speed="1"
+            style="width: 70px; height: 70px"
+            loop
+            autoplay
+          ></lottie-player>
+          <div class="other-days"><span class="other-days temperatures">${wind} km/h</span>
+          <div>
+        </div>
+      </div>
+`;
+    forecastHTML = forecastHTML + `</div>`;
+      forecast.innerHTML = forecastHTML 
     }
-  });
+  })
+ 
 }
 
 function getForecast(lat, lon) {
