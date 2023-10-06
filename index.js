@@ -132,11 +132,18 @@ form.addEventListener("submit", function (event) {
 
 //Give real weather for Porto as default
 let portoTemperature = document.querySelector("#temperature");
+let todayDescription= document.querySelector("#today-description");
+let todayHumidityValue= document.querySelector("#today-humidity-value");
+let todayWindValue= document.querySelector("#today-wind-value");
 
 function showPortoTemperature(response) {
   celsiusLink.style.fontWeight = "bold";
-
+console.log("dafuq",response);
   portoTemperature.innerHTML = Math.round(response.data.main.temp);
+  todayHumidityValue.innerHTML = Math.round(response.data.main.humidity);
+  todayWindValue.innerHTML = Math.round(response.data.wind.speed*3.6);
+  todayDescription.innerHTML = response.data.weather[0].description;
+
   getForecast(response.data.coord.lat, response.data.coord.lon);
 }
 
@@ -159,6 +166,9 @@ function showCityTemperature(response) {
     )}`;
     
   }
+  todayHumidityValue.innerHTML = Math.round(response.data.main.humidity);
+  todayWindValue.innerHTML = Math.round(response.data.wind.speed*3.6);
+  todayDescription.innerHTML = response.data.weather[0].description;
 }
 
 function searchCity(context) {
@@ -186,7 +196,7 @@ form.addEventListener("submit", searchCity);
 
 function showTemperature(position) {
   let temperature = Math.round(position.data.main.temp);
-  console.log(position.data.main.temp);
+  console.log("here",position);
   let todayTempElement = document.querySelector("#temperature");
   todayTempElement.innerHTML = `${temperature}`;
   if (fahrenheitLink.style.fontWeight === "bold") {
@@ -195,6 +205,9 @@ function showTemperature(position) {
   let h1 = document.querySelector("h1");
   let city = position.data.name;
   h1.innerHTML = `${city}`;
+  todayHumidityValue.innerHTML = Math.round(position.data.main.humidity);
+  todayWindValue.innerHTML = Math.round(position.data.wind.speed*3.6);
+  todayDescription.innerHTML = position.data.weather[0].description;
 }
 
 function showPosition(position) {
