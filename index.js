@@ -145,8 +145,10 @@ console.log("dafuq",response);
   todayHumidityValue.innerHTML = Math.round(response.data.main.humidity);
   todayWindValue.innerHTML = Math.round(response.data.wind.speed*3.6);
   todayDescription.innerHTML = response.data.weather[0].description;
+let weatherDescriptionLottie = response.data.weather[0].main;
+let source= getLottie(weatherDescriptionLottie);
 
-
+document.getElementById("today-lottie").load(source);
   getForecast(response.data.coord.lat, response.data.coord.lon);
 }
 
@@ -172,6 +174,10 @@ function showCityTemperature(response) {
   todayHumidityValue.innerHTML = Math.round(response.data.main.humidity);
   todayWindValue.innerHTML = Math.round(response.data.wind.speed*3.6);
   todayDescription.innerHTML = response.data.weather[0].description;
+  let weatherDescriptionLottie = response.data.weather[0].main;
+  let source= getLottie(weatherDescriptionLottie);
+
+document.getElementById("today-lottie").load(source);
 }
 
 function searchCity(context) {
@@ -211,6 +217,10 @@ function showTemperature(position) {
   todayHumidityValue.innerHTML = Math.round(position.data.main.humidity);
   todayWindValue.innerHTML = Math.round(position.data.wind.speed*3.6);
   todayDescription.innerHTML = position.data.weather[0].description;
+  let weatherDescriptionLottie = position.data.weather[0].main;
+  let source= getLottie(weatherDescriptionLottie);
+
+  document.getElementById("today-lottie").load(source);
 }
 
 function showPosition(position) {
@@ -245,6 +255,8 @@ function displayForecast(response) {
     let wind= Math.round((response.data.daily[index].wind_speed) *3.6);
     let maxTemp= Math.round(temp.max-273.15);
     let minTemp= Math.round(temp.min-273.15);
+    let icon = response.data.daily[index].weather[0].main;
+let iconUrl= getLottie(icon);
     if (fahrenheitLink.style.fontWeight === "bold") {
       maxTemp = `${Math.round((maxTemp * 9) / 5 + 32)}`;
       minTemp = `${Math.round((minTemp * 9) / 5 + 32)}`;
@@ -256,7 +268,7 @@ function displayForecast(response) {
           <div class="other-days">${day}</div>
             <lottie-player
               class="players"
-              src="./Resources/lotties/foggy.json"
+              src="${iconUrl}"
               background="transparent"
               speed="1"
               style="width: 70px; height: 70px"
@@ -326,6 +338,30 @@ function getForecast(lat, lon) {
   axios.get(oneCallApiUrl).then(displayForecast);
 }
 
+//Creating function that will get Weather Description as input and give the icon as output
+
+function getLottie (weatherDescriptionLottie) {
+let source;
+console.log(weatherDescriptionLottie);
+  if (weatherDescriptionLottie === "Clear"){
+  source="https://lottie.host/b203385b-4897-48c5-9472-c752e11f75de/OiudcrwV4p.json"
+} else if (weatherDescriptionLottie === "Clouds") {
+  source="https://lottie.host/c55bc277-1acc-4cb4-af39-3973054bffe8/44cws6Lkjh.json"
+} else if (weatherDescriptionLottie === "Drizzle") {
+  source="https://lottie.host/728ac43a-91dd-4785-9fbb-519df1a04605/nBItufbJYl.json" 
+} else if (weatherDescriptionLottie === "Rain") {
+  source="https://lottie.host/a29dc3ce-1abc-40e9-859e-287504dcf451/NL3VN9iVeY.json" 
+} else if (weatherDescriptionLottie === "Thunderstorm") {
+  source="https://lottie.host/35ac5c8c-8329-47e4-9784-7310a5337c2a/8VNo0LgZU1.json" 
+} else if (weatherDescriptionLottie === "Snow") {
+  source="https://lottie.host/5ee56a11-de15-41d1-9da6-dae922750802/0KbQ41uHIx.json" 
+} else {
+  source="https://lottie.host/5cd9a689-8db4-40a2-a04f-cbe380c0d6d1/gHAFK08eRV.json"
+}
+console.log(source);
+return source;
+};
+
 // Defining the next day from today for the daily forecast
 
 function getDaysInOrder(){
@@ -393,3 +429,4 @@ function convertTemp(event) {
 
 fahrenheitLink.addEventListener("click", convertTemp);
 celsiusLink.addEventListener("click", convertTemp);
+
