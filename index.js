@@ -292,7 +292,7 @@ let iconUrl= getLottie(icon);
         <div class="other-days">${day}</div>
           <lottie-player
             class="players"
-            src="https://assets6.lottiefiles.com/temp/lf20_dgjK9i.json"
+            src="${iconUrl}"
             background="transparent"
             speed="1"
             style="width: 70px; height: 70px"
@@ -313,7 +313,7 @@ forecastHTML = forecastHTML + `</div>`;
         <div class="other-days">${day}</div>
           <lottie-player
             class="players"
-            src="https://assets6.lottiefiles.com/temp/lf20_dgjK9i.json"
+            src="${iconUrl}"
             background="transparent"
             speed="1"
             style="width: 70px; height: 70px"
