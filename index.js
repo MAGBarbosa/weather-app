@@ -269,7 +269,7 @@ let iconUrl= getLottie(icon);
             <div class="other-days"><span class="other-days temperatures max-temp">${maxTemp}</span>
             <span id="other-days temperatures">|<span>
             <span class="other-days temperatures min-temp">${minTemp}</span>
-            <span id="other-days temperatures celsius-symbol">ºC<span>
+            <span id="other-days temperatures celsius-symbol">º<span>
             <div>
           </div>
         </div>
