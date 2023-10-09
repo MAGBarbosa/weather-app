@@ -1,14 +1,10 @@
 let now = new Date();
-console.log(now);
 
 let date = now.getDate();
-console.log(date);
 
 let milliseconds = now.getMilliseconds();
-console.log(milliseconds);
 
 let day = now.getDay();
-console.log(day);
 
 let days = [
   "Sunday",
@@ -22,10 +18,8 @@ let days = [
 let weekDay = days[now.getDay()];
 
 let year = now.getFullYear();
-console.log(year);
 
 let month = now.getMonth();
-console.log(month);
 
 let months = [
   "January",
@@ -140,7 +134,6 @@ let todayLottieFile= document.querySelector("#today-lottie");
 
 function showPortoTemperature(response) {
   celsiusLink.style.fontWeight = "bold";
-console.log("dafuq",response);
   portoTemperature.innerHTML = Math.round(response.data.main.temp);
   todayHumidityValue.innerHTML = Math.round(response.data.main.humidity);
   todayWindValue.innerHTML = Math.round(response.data.wind.speed*3.6);
@@ -164,7 +157,6 @@ function showCityTemperature(response) {
   let todayTempElement = document.querySelector("#temperature");
   let roundedTemperature = Math.round(response.data.main.temp);
   todayTempElement.innerHTML = `${roundedTemperature}`;
-  console.log(response);
   if (fahrenheitLink.style.fontWeight === "bold") {
     todayTempElement.innerHTML = `${Math.round(
       (roundedTemperature * 9) / 5 + 32
@@ -205,7 +197,6 @@ form.addEventListener("submit", searchCity);
 
 function showTemperature(position) {
   let temperature = Math.round(position.data.main.temp);
-  console.log("here",position);
   let todayTempElement = document.querySelector("#temperature");
   todayTempElement.innerHTML = `${temperature}`;
   if (fahrenheitLink.style.fontWeight === "bold") {
@@ -243,7 +234,7 @@ currentLocationButton.addEventListener("click", requestLocation);
 // 6-days forecast
 
 function displayForecast(response) {
-  console.log("aqui :",response);
+
   let forecast = document.querySelector(".weekly-forecast");
   let forecastHTML = `<div class="row">`;
   let days =  getDaysInOrder();
@@ -342,7 +333,7 @@ function getForecast(lat, lon) {
 
 function getLottie (weatherDescriptionLottie) {
 let source;
-console.log(weatherDescriptionLottie);
+
   if (weatherDescriptionLottie === "Clear"){
   source="https://lottie.host/b203385b-4897-48c5-9472-c752e11f75de/OiudcrwV4p.json"
 } else if (weatherDescriptionLottie === "Clouds") {
@@ -358,7 +349,6 @@ console.log(weatherDescriptionLottie);
 } else {
   source="https://lottie.host/5cd9a689-8db4-40a2-a04f-cbe380c0d6d1/gHAFK08eRV.json"
 }
-console.log(source);
 return source;
 };
 
