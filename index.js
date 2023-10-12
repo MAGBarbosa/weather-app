@@ -356,13 +356,13 @@ return source;
 
 function getDaysInOrder(){
   let days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
   ];
 
 let currentDay = new Date().getDay()+1; // so i get the next day from today
